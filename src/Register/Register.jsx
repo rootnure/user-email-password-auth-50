@@ -14,7 +14,8 @@ const Register = () => {
         e.preventDefault();
         const email = e.target.email.value;
         const password = e.target.password.value;
-        console.log({ email, password });
+        const checked = e.target.terms.checked;
+        console.log({ email, password, checked });
         // reset error
         setRegisterError('');
         setRegisterSuccess('');
@@ -40,6 +41,10 @@ const Register = () => {
             setRegisterError("Password must contain at lest one special character");
             return;
         }
+        else if (!checked) {
+            setRegisterError("Must Check our Terms & Conditions");
+            return;
+        }
 
         // create user
         createUserWithEmailAndPassword(auth, email, password)
@@ -61,9 +66,9 @@ const Register = () => {
                 <form onSubmit={handleRegister} className="w-9/12 mx-auto">
                     <input className="w-full rounded px-4 py-2" type="email" name="email" placeholder="Your Email" required />
                     <br />
-                    <div className="relative">
+                    <div className="relative mt-4">
                         <input
-                            className="my-4 w-full rounded px-4 py-2"
+                            className="w-full rounded px-4 py-2"
                             type={isPasswordVisible ? "text" : "password"} name="password"
                             placeholder="Password"
                             required />
@@ -77,7 +82,12 @@ const Register = () => {
                         </span>
                     </div>
                     <br />
-                    <input className="btn btn-secondary w-full" type="submit" value="Submit" />
+                    <div className="mb-2 flex items-center gap-x-2">
+                        <input type="checkbox" name="terms" id="terms" />
+                        <label>Accept our <a href="#" className="font-bold text-blue-500">Terms and Conditions</a></label>
+                    </div>
+                    <br />
+                    <input className="btn btn-secondary w-full" type="submit" value="Register" />
                     <br />
                 </form>
             </div>
