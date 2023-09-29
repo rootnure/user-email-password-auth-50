@@ -1,8 +1,10 @@
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { sendPasswordResetEmail, signInWithEmailAndPassword } from "firebase/auth";
 import auth from "../../firebase/firebase.config";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { BiSolidShow, BiSolidHide } from "react-icons/bi";
 import { Link } from "react-router-dom";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 const LogIn = () => {
@@ -10,6 +12,7 @@ const LogIn = () => {
     const [logInError, setLogInError] = useState('');
     const [logInSuccess, setLogInSuccess] = useState(false);
     const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+    const emailRef = useRef(null);
 
     const handleLogin = e => {
         e.preventDefault();
@@ -35,6 +38,31 @@ const LogIn = () => {
             })
     }
 
+    const handleForgotPassword = () => {
+        const email = emailRef.current.value;
+        if (!email) {
+            console.log("please provide an email in email input filed to receive reset password mail to that email address");
+            toast.warn("please provide an email in email input filed to receive reset password mail to that email address", {autoClose: 9500});
+            return;
+        }
+        else if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email)) {
+            console.log("Please provide a valid email address instead of: " + email);
+            toast.warn("Please provide a valid email address instead of: " + email, {autoClose: 5000});
+            return;
+        }
+        else {
+            sendPasswordResetEmail(auth, email)
+                .then(result => {
+                    console.log("Reset password mail send to your email address: " + email);
+                    console.log(result);
+                    toast.success("Reset password mail send to your email address: " + email, {autoClose: 5000})
+                })
+                .catch(error => {
+                    console.log(error.message);
+                })
+        }
+    }
+
     return (
         <div className="hero min-h-screen bg-base-200">
             <div className="hero-content flex-col lg:flex-row-reverse">
@@ -49,7 +77,12 @@ const LogIn = () => {
                                 <label className="label">
                                     <span className="label-text">Email</span>
                                 </label>
-                                <input type="email" name="email" placeholder="email" className="input input-bordered" />
+                                <input
+                                    type="email"
+                                    name="email"
+                                    ref={emailRef}
+                                    placeholder="email"
+                                    className="input input-bordered" />
                             </div>
                             <div className="form-control">
                                 <label className="label">
@@ -71,7 +104,10 @@ const LogIn = () => {
                                     </span>
                                 </div>
                                 <label className="label">
-                                    <a href="#" className="label-text-alt link link-hover">Forgot password?</a>
+                                    <a
+                                        onClick={handleForgotPassword}
+                                        href="#"
+                                        className="label-text-alt link link-hover">Forgot password?</a>
                                 </label>
                             </div>
                             <div className="form-control mt-6">
@@ -91,6 +127,17 @@ const LogIn = () => {
                     </div>
                 </div>
             </div>
+            <ToastContainer
+                position="top-right"
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick={true}
+                rtl={false}
+                pauseOnFocusLoss={false}
+                draggable={false}
+                pauseOnHover={false}
+                theme="colored"
+            ></ToastContainer>
         </div>
     );
 };
