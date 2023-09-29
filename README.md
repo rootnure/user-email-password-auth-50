@@ -1,4 +1,15 @@
-# React + Vite
+# user-email-password-auth
+
+## Topics Covered
+- Validate input field value using **REGULAR EXPRESSION**
+- `createUserWithEmailAndPassword()` to create new user
+- `signInWithEmailAndPassword()` to sign in using email and password
+- `sendPasswordResetEmail()` to send password reset mail to registered user mail account
+- `sendEmailVerification()` to send email verification mail to user
+- `updateProfile()` to update **displayName** and **photoURL**
+
+
+## React + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 

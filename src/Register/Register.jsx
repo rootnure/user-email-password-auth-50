@@ -113,7 +113,7 @@ const Register = () => {
                     <br />
                     <div className="mb-2 flex items-center gap-x-2">
                         <input type="checkbox" name="terms" id="terms" />
-                        <label>Accept our <a href="#" className="font-bold text-blue-500">Terms and Conditions</a></label>
+                        <label htmlFor="terms">Accept our <a href="#" className="font-bold text-blue-500">Terms and Conditions</a></label>
                     </div>
                     <br />
                     <input className="btn btn-secondary w-full" type="submit" value="Register" />
