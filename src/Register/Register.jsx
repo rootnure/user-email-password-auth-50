@@ -16,10 +16,26 @@ const Register = () => {
         // reset error
         setRegisterError('');
         setRegisterSuccess('');
-        
+
         // password strength validation
         if(password.length < 6) {
             setRegisterError('Password should be at least 6 characters');
+            return;
+        }
+        else if(!/[A-Z]/.test(password)){
+            setRegisterError("Password must contain at lest one UPPERCASE character");
+            return;
+        }
+        else if(!/[a-z]/.test(password)){
+            setRegisterError("Password must contain at lest one lowercase character");
+            return;
+        }
+        else if(!/[0-9]/.test(password)){
+            setRegisterError("Password must contain at lest one digit");
+            return;
+        }
+        else if(!/[#?!@$%^&*-]/.test(password)){
+            setRegisterError("Password must contain at lest one special character");
             return;
         }
 
