@@ -1,8 +1,9 @@
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
 import auth from "../firebase/firebase.config"
 import { useState } from "react";
 import { BiSolidShow, BiSolidHide } from "react-icons/bi";
 import { Link } from "react-router-dom";
+import { toast } from 'react-toastify';
 
 
 const Register = () => {
@@ -52,6 +53,13 @@ const Register = () => {
             .then(result => {
                 console.log(result);
                 setRegisterSuccess("Registration with email " + email + " is successful");
+                
+                // send verification email to verify email address
+                sendEmailVerification(auth.currentUser)
+                    .then(result => {
+                        toast.success('Check your email. Verify your email address: ' + email, {autoClose: 5500})
+                        console.log(result);
+                    })
             })
             .catch(error => {
                 console.warn(error);

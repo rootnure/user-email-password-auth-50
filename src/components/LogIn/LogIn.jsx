@@ -1,10 +1,9 @@
-import { sendPasswordResetEmail, signInWithEmailAndPassword } from "firebase/auth";
+import { sendEmailVerification, sendPasswordResetEmail, signInWithEmailAndPassword } from "firebase/auth";
 import auth from "../../firebase/firebase.config";
 import { useRef, useState } from "react";
 import { BiSolidShow, BiSolidHide } from "react-icons/bi";
 import { Link } from "react-router-dom";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
 
 
 const LogIn = () => {
@@ -30,7 +29,20 @@ const LogIn = () => {
         signInWithEmailAndPassword(auth, email, password)
             .then(result => {
                 console.log(result.user);
-                setLogInSuccess(true);
+                if (!result.user.emailVerified) {
+                    toast.warn("Please check your email to verify and then try to login");
+                    setLogInError('Verification pending. Verify email to login.')
+                    sendEmailVerification(auth.currentUser)
+                        .then(result => {
+                            console.log(result);
+                        })
+                        .catch(error => {
+                            console.error(error);
+                        })
+                }
+                else {
+                    setLogInSuccess(true);
+                }
             })
             .catch(error => {
                 console.error(error);
@@ -42,12 +54,12 @@ const LogIn = () => {
         const email = emailRef.current.value;
         if (!email) {
             console.log("please provide an email in email input filed to receive reset password mail to that email address");
-            toast.warn("please provide an email in email input filed to receive reset password mail to that email address", {autoClose: 9500});
+            toast.warn("please provide an email in email input filed to receive reset password mail to that email address", { autoClose: 9500 });
             return;
         }
         else if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email)) {
             console.log("Please provide a valid email address instead of: " + email);
-            toast.warn("Please provide a valid email address instead of: " + email, {autoClose: 5000});
+            toast.warn("Please provide a valid email address instead of: " + email, { autoClose: 5000 });
             return;
         }
         else {
@@ -55,7 +67,7 @@ const LogIn = () => {
                 .then(result => {
                     console.log("Check your email inbox. Reset password mail send to: " + email);
                     console.log(result);
-                    toast.success("Check your email inbox. Reset password mail send to: " + email, {autoClose: 5000})
+                    toast.success("Check your email inbox. Reset password mail send to: " + email, { autoClose: 5000 })
                 })
                 .catch(error => {
                     console.log(error.message);
@@ -127,17 +139,6 @@ const LogIn = () => {
                     </div>
                 </div>
             </div>
-            <ToastContainer
-                position="top-right"
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick={true}
-                rtl={false}
-                pauseOnFocusLoss={false}
-                draggable={false}
-                pauseOnHover={false}
-                theme="colored"
-            ></ToastContainer>
         </div>
     );
 };
