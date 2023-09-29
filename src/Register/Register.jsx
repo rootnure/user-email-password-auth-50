@@ -2,6 +2,7 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import auth from "../firebase/firebase.config"
 import { useState } from "react";
 import { BiSolidShow, BiSolidHide } from "react-icons/bi";
+import { Link } from "react-router-dom";
 
 
 const Register = () => {
@@ -101,6 +102,7 @@ const Register = () => {
                     <p className="text-center mt-4 text-red-400">{registerError}</p>
                 </div>
             }
+            <p className="text-center mt-4">Already have an account? Please <Link to="/login" className="text-blue-500">LogIn</Link></p>
         </div>
     );
 };
