@@ -5,10 +5,11 @@ import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
-import { Root } from 'postcss';
+import Root from './components/Root/Root.jsx';
 import Home from './components/Home/Home.jsx';
 import LogIn from './components/LogIn/LogIn.jsx';
 import Register from './Register/Register';
+import HeroRegister from './HeroRegister/HeroRegister';
 
 const router = createBrowserRouter([
   {
@@ -26,6 +27,10 @@ const router = createBrowserRouter([
       {
         path: "/register",
         element: <Register></Register>
+      },
+      {
+        path: "/heroRegister",
+        element: <HeroRegister></HeroRegister>
       }
     ]
   },
