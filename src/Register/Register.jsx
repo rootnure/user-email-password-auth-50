@@ -1,4 +1,4 @@
-import { createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
+import { createUserWithEmailAndPassword, sendEmailVerification, updateProfile } from "firebase/auth";
 import auth from "../firebase/firebase.config"
 import { useState } from "react";
 import { BiSolidShow, BiSolidHide } from "react-icons/bi";
@@ -14,6 +14,7 @@ const Register = () => {
 
     const handleRegister = e => {
         e.preventDefault();
+        const name = e.target.name.value;
         const email = e.target.email.value;
         const password = e.target.password.value;
         const checked = e.target.terms.checked;
@@ -53,6 +54,14 @@ const Register = () => {
             .then(result => {
                 console.log(result);
                 setRegisterSuccess("Registration with email " + email + " is successful");
+
+                // update profile
+                updateProfile(result.user, {
+                    displayName: name,
+                    photoURL: "https://example.com/jane-q-user/profile.jpg"
+                })
+                    .then(() => console.log('Profile Updated'))
+                    .catch(() => console.log('Something went wrong'))
                 
                 // send verification email to verify email address
                 sendEmailVerification(auth.currentUser)
@@ -73,7 +82,18 @@ const Register = () => {
             <div className="mx-auto w-6/12">
                 <h2 className="text-3xl text-center mb-4">Please Register</h2>
                 <form onSubmit={handleRegister} className="w-9/12 mx-auto">
-                    <input className="w-full rounded px-4 py-2" type="email" name="email" placeholder="Your Email" required />
+                    <input
+                        className="w-full rounded px-4 py-2 mb-4"
+                        type="text"
+                        name="name"
+                        placeholder="Your Name"
+                        required />
+                    <input 
+                    className="w-full rounded px-4 py-2" 
+                    type="email" 
+                    name="email" 
+                    placeholder="Your Email" 
+                    required />
                     <br />
                     <div className="relative mt-4">
                         <input
