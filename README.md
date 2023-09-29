@@ -1,5 +1,7 @@
 # user-email-password-auth
 
+## Live Link: [Click Here](http://firebase-email-password-auth-rootnure.surge.sh/)
+
 ## Topics Covered
 - Validate input field value using **REGULAR EXPRESSION**
 - `createUserWithEmailAndPassword()` to create new user
