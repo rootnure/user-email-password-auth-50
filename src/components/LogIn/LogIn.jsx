@@ -53,9 +53,9 @@ const LogIn = () => {
         else {
             sendPasswordResetEmail(auth, email)
                 .then(result => {
-                    console.log("Reset password mail send to your email address: " + email);
+                    console.log("Check your email inbox. Reset password mail send to: " + email);
                     console.log(result);
-                    toast.success("Reset password mail send to your email address: " + email, {autoClose: 5000})
+                    toast.success("Check your email inbox. Reset password mail send to: " + email, {autoClose: 5000})
                 })
                 .catch(error => {
                     console.log(error.message);
